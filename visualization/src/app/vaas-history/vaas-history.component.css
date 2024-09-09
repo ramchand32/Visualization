@@ -1,0 +1,60 @@
+.gs-vaas-div-hist1 {
+  width: 100%;
+  height: 30px;
+}
+.gs-vaas-bn-newreq {
+  position: relative;
+  top: 15px;
+  right: 31px;
+  float: right;
+  width: 150px;
+  height: 26px;
+  background: #125ab3;
+  border-radius: 2px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  color: #ffffff;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+.gs-vaas-txt-vishist {
+  width: 200px;
+  height: 22px;
+  margin-left: 30px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  line-height: 22px;
+  color: #313133;
+}
+.gs-vaas-txt-nofviss {
+  position: relative;
+  width: 150px;
+  height: 16px;
+  left: 30px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #125ab3;
+}
+.gs-vaas-grid-hist {
+  position: relative;
+  box-sizing: border-box;
+  margin-right: 31px;
+  margin-left: 30px;
+  width: auto;
+  border: 1px solid #d9eafa;
+  border-radius: 4px 4px 2px 2px;
+}
+
+.gs-vaas-div-countusers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.gs-vaas-cb-userlist {
+  width: 250px;
+  margin-right: 31px;
+}

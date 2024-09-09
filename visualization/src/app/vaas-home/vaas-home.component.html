@@ -1,0 +1,499 @@
+<div class="gs-vaas-details-service">
+  <span class="gs-vaas"
+    >Getting started with<b>&nbsp;Visualization as a Service</b></span
+  >
+
+  <p class="gs-vaas-desc">
+    This application is used to serve the purpose of creating a<b
+      ><i>&nbsp;Visualization Diagram</i></b
+    >
+    &nbsp;when a valid&nbsp;<b>config file</b>&nbsp;is given as input
+  </p>
+
+  <button
+    kendoButton
+    libTrackClick
+    class="gs-vaas-button"
+    *ngIf="!opened"
+    [activity_name]="'learn_more'"
+    [service_name]="serviceName"
+    (trackClick)="onpreview()"
+  >
+    <span class="gs-vaas-button-text">Learn More</span>
+  </button>
+  <button
+    kendoButton
+    class="gs-vaas-button"
+    libTrackClick
+    [activity_name]="'launch_tour'"
+    [service_name]="serviceName"
+    (trackClick)="onLaunch()"
+  >
+    <span class="gs-vaas-button-text">Launch Tour</span>
+  </button>
+
+  <!-- Preview Service Dialog -->
+  <kendo-dialog
+    title="VaaS Preview"
+    *ngIf="opened"
+    (close)="close('cancel')"
+    [minWidth]="400"
+    [width]="600"
+    [minHeight]="'60vh'"
+    [maxHeight]="'80vh'"
+  >
+    <kendo-loader *ngIf="!isPreviewDataLoaded"> </kendo-loader>
+    <div *ngIf="isPreviewDataLoaded && !previewData" class="nopreview">
+      <img src="./assets/images/nopreview.svg" />
+      <p>! No Preview found.</p>
+    </div>
+    <div
+      class="preview-modal-body"
+      *ngIf="previewData && previewData.content.data.length > 0"
+    >
+      <h4>{{ previewData.title }}</h4>
+      <ng-template [ngIf]="previewData.content.data[2].content.data">
+        <video controls muted width="350">
+          <source src="{{ previewData.content.data[2].content.data }}" />
+          Your browser does not support the video tag.
+        </video>
+      </ng-template>
+      <h4>FAQs</h4>
+      <ng-template [ngIf]="previewData.content.data[0].content.data">
+        <kendo-expansionpanel
+          *ngFor="
+            let faqs of previewData.content.data[0].content.data;
+            let i = index
+          "
+        >
+          <ng-template kendoExpansionPanelTitleDirective>
+            <h6>{{ faqs.Header }}</h6>
+          </ng-template>
+          <kendo-expansionpanel
+            *ngFor="let values of faqs.Values; let j = index"
+          >
+            <ng-template kendoExpansionPanelTitleDirective>
+              <h6>{{ values.Q }}</h6>
+            </ng-template>
+            <p style="margin-left: 30px">
+              <strong>ANS: </strong>{{ values.A }}
+            </p>
+          </kendo-expansionpanel>
+        </kendo-expansionpanel>
+      </ng-template>
+      <h4>Info</h4>
+      <ng-template [ngIf]="previewData.content.data[1].content">
+        <p>
+          {{ previewData.content.data[1].content.title }}
+          <a href="mailto:gstools@avaya.com">gstools@avaya.com</a>
+          <!-- <a target="_blank" [href]="previewData.content.data[1].content.links"
+          >Avaya OneCare &#8599;</a
+        > -->
+        </p>
+      </ng-template>
+    </div>
+  </kendo-dialog>
+</div>
+<main>
+  <div id="gs-vaas-id-history">
+    <div class="gs-vaas-header-vaastype">Visualization Type</div>
+    <div>
+      <kendo-textbox
+        [(ngModel)]="vstypetext"
+        (valueChange)="vstype()"
+        placeholder="Search Visualization Type"
+        [clearButton]="true"
+        class="gs-vaas-ktext-search"
+      >
+        <ng-template kendoTextBoxPrefixTemplate>
+          <kendo-icon name="search"></kendo-icon>
+        </ng-template>
+        <ng-template kendoTextBoxSuffixTemplate>
+          <kendo-textbox-separator></kendo-textbox-separator>
+        </ng-template>
+      </kendo-textbox>
+    </div>
+    <div class="gs-vaas-kbutton-history">
+      <button
+        kendoButton
+        themeColor="primary"
+        type="submit"
+        (click)="visualizations()"
+        class="vis-history right"
+        [disabled]="flagForLaunch"
+      >
+        Visualization History
+      </button>
+    </div>
+  </div>
+
+  <div id="gs-vaas-id-selectandupload">
+    <div>
+      <form
+        class="k-form gs-vaas-form-radio"
+        [formGroup]="form"
+        id="vaas-home-form-radio"
+      >
+        <kendo-formfield showHints="initial" showErrors="initial">
+          <ul class="k-radio-list">
+            <li class="k-radio-item" *ngFor="let vstype of filtered_vstypes">
+              <input
+                type="radio"
+                #type
+                value="{{ vstype.title }}"
+                kendoRadioButton
+                (change)="valueChange(vstype.title)"
+                formControlName="confirmation"
+                [(ngModel)]="selectedReportType"
+              />
+              <kendo-label
+                class="k-radio-label"
+                [for]="type"
+                text="{{ vstype.title }}"
+              ></kendo-label>
+            </li>
+          </ul>
+          <!-- <kendo-formhint>Hint: Select a Visualization type.</kendo-formhint> -->
+          <kendo-formerror *ngIf="isValid"
+            >Error: This field is required
+          </kendo-formerror>
+        </kendo-formfield>
+      </form>
+    </div>
+    <div>
+      <form
+        class="k-form gs-vaas-form-ndfs"
+        novalidate
+        [formGroup]="form"
+        (ngSubmit)="submit(form.value, form.valid)"
+      >
+        <div id="vaas-home-label-name" class="vaas-home-label-name">
+          <span class="gs-vaas-label-name"
+            >Name <span class="gs-vaas-star-red">*</span></span
+          >
+
+          <kendo-formfield class="gs-vaas-ktext-reqName" showHints="initial">
+            <kendo-textbox
+              #reqNameControl
+              formControlName="reqNameControl"
+              [(ngModel)]="reqName"
+              placeholder="ex: BOA15,BOA_15,BOA-15"
+              [clearButton]="true"
+            >
+            </kendo-textbox>
+            <!-- <kendo-formhint>Hint: Enter Request Name</kendo-formhint> -->
+            <kendo-formerror
+              *ngIf="form.controls['reqNameControl'].errors?.['required'] && !submitted"
+            >
+              Error: Request name is required.</kendo-formerror
+            >
+            <kendo-formerror
+              *ngIf="form.controls['reqNameControl'].errors?.['minlength'] && !submitted"
+            >
+              Error: Minimum length is 3.</kendo-formerror
+            >
+            <kendo-formerror
+              *ngIf="form.controls['reqNameControl'].errors?.['maxlength'] && !submitted"
+            >
+              Error: Maximum length is 50.</kendo-formerror
+            >
+            <kendo-formerror
+              *ngIf="form.controls['reqNameControl'].errors?.['pattern'] && !submitted"
+            >
+              Error: Does not start with space (or) no special characters
+              allowed.
+            </kendo-formerror>
+          </kendo-formfield>
+        </div>
+        <div id="vaas-home-description">
+          <span class="gs-vaas-label-desc">Description</span>
+          <div class="gs-vaas-text-description" [innerHTML]="description"></div>
+        </div>
+        <div id="vaas-home-label-selfile">
+          <span class="gs-vaas-label-selfile"
+            >{{ hintText }}<span class="gs-vaas-star-red">*</span></span
+          >
+          <kendo-formfield class="gs-vaas-fs-config">
+            <kendo-fileselect
+              #files
+              *ngIf="selectedReportType"
+              formControlName="files"
+              [(ngModel)]="myFiles"
+              [multiple]="false"
+              (select)="select($event)"
+              [restrictions]="myRestrictions"
+              accept="{{ myRestrictions.allowedExtensions }}"
+            >
+            </kendo-fileselect>
+            <!-- <kendo-formhint>{{ hintText }}</kendo-formhint> -->
+            <kendo-formerror
+              *ngIf="form.controls['files'].errors?.['required'] && !submitted"
+              >Error:Uploading a {{ myRestrictions.allowedExtensions }} file is
+              required.</kendo-formerror
+            >
+          </kendo-formfield>
+        </div>
+
+        <div
+          *ngIf="
+            myFiles &&
+            myFiles.length === 1 &&
+            selectedReportType === visualization_types[0].title
+          "
+          class="gs-vass-selconfig"
+        >
+          <span class="gs-vaas-label-selconfig">
+            Select a Config From The Uploaded .PVA
+            <span class="gs-vaas-star-red">*</span>
+          </span>
+          <kendo-formfield class="gs-vaas-config-selector">
+            <lib-tree-viewer
+              *ngIf="openedTreeView"
+              [opened]="openedTreeView"
+              [title]="pvaViewTitle"
+              [data]="pvaData"
+              [selectedValues]="selectedConfigValues"
+              (treeViewChanged)="handleTreeEvent($event)"
+            >
+            </lib-tree-viewer>
+          </kendo-formfield>
+          <button
+            kendoButton
+            themeColor="primary"
+            (click)="openConfigTreeView()"
+            type="button"
+          >
+            Select Config
+          </button>
+        </div>
+
+        <div
+          class="gs-vass-config-options"
+          *ngIf="selectedReportType === visualization_types[0].title"
+        >
+          <kendo-panelbar>
+            <kendo-panelbar-item
+              title="Report Settings"
+              [expanded]="flagForConnectionSettings"
+            >
+              <ng-template kendoPanelBarContent>
+                <div id="vaas-home-network-region-connections">
+                  <span class="gs-vaas-config-options-label">
+                    NETWORK REGION CONNECTIONS</span
+                  >
+                  <div class="gs-vaas-config-options-network-regions">
+                    <ul class="k-radio-list">
+                      <li class="k-radio-item">
+                        <input
+                          type="radio"
+                          value="AllRegions"
+                          kendoRadioButton
+                          [ngModelOptions]="{ standalone: true }"
+                          [(ngModel)]="networkRegionSelection"
+                        />
+                        <kendo-label
+                          class="k-radio-label"
+                          text="All Network Regions"
+                        ></kendo-label>
+                      </li>
+                      <li class="k-radio-item">
+                        <input
+                          type="radio"
+                          value="AllCoreRegions"
+                          kendoRadioButton
+                          [ngModelOptions]="{ standalone: true }"
+                          [(ngModel)]="networkRegionSelection"
+                        />
+                        <kendo-label
+                          class="k-radio-label"
+                          text="All Core Network Regions"
+                        ></kendo-label>
+                      </li>
+                      <li class="k-radio-item">
+                        <input
+                          type="radio"
+                          value="SelectedRegions"
+                          kendoRadioButton
+                          [ngModelOptions]="{ standalone: true }"
+                          [(ngModel)]="networkRegionSelection"
+                        />
+                        <kendo-label
+                          class="k-radio-label"
+                          text="Selected Network Regions Only"
+                        ></kendo-label>
+                      </li>
+                      <li
+                        class="k-checkbox-item gs-vaas-config-options-network-regions-checkbox"
+                      >
+                        <input
+                          type="checkbox"
+                          [ngModelOptions]="{ standalone: true }"
+                          [(ngModel)]="hideUnselectedNetworkRegions"
+                          [disabled]="
+                            networkRegionSelection !== 'SelectedRegions'
+                          "
+                        />
+                        <kendo-label
+                          class="k-checkbox-label"
+                          text="Hide unselected Network Regions and their connections"
+                        ></kendo-label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div id="vaas-home-connection-types">
+                  <span class="gs-vaas-config-options-label">
+                    CONNECTION TYPES</span
+                  >
+                  <div class="gs-vaas-config-options-connection-types">
+                    <input
+                      class="gs-vaas-config-options-connection-types-input"
+                      type="checkbox"
+                      [(ngModel)]="IPConnections"
+                      [ngModelOptions]="{ standalone: true }"
+                      (change)="configOptionsConnectionTypeChange()"
+                      [disabled]="
+                        IPWithIGAROverflow === false &&
+                        IGARConnections === false
+                      "
+                    />
+                    <kendo-label
+                      class="k-checkbox-label"
+                      text="IP Connections"
+                    ></kendo-label>
+                    <input
+                      class="gs-vaas-config-options-connection-types-input"
+                      type="checkbox"
+                      [(ngModel)]="IPWithIGAROverflow"
+                      [ngModelOptions]="{ standalone: true }"
+                      (change)="configOptionsConnectionTypeChange()"
+                    />
+                    <kendo-label
+                      class="k-checkbox-label"
+                      text="IP with IGAR Overflow"
+                    ></kendo-label>
+                    <input
+                      class="gs-vaas-config-options-connection-types-input"
+                      type="checkbox"
+                      [(ngModel)]="IGARConnections"
+                      [ngModelOptions]="{ standalone: true }"
+                      (change)="configOptionsConnectionTypeChange()"
+                    />
+                    <kendo-label
+                      class="k-checkbox-label"
+                      text="IGAR Connections"
+                    ></kendo-label>
+                  </div>
+                </div>
+              </ng-template>
+            </kendo-panelbar-item>
+          </kendo-panelbar>
+        </div>
+
+        <div *ngIf="selectedReportType === visualization_types[1].title">
+          <div
+            class="gs-vaas-config-options-inventoried-nodes"
+            id="vaas-home-inventoried-nodes"
+          >
+            <input
+              class="gs-vaas-config-options-inventoried-nodes-input"
+              type="checkbox"
+              [(ngModel)]="ASCIInventoriedNodesOnly"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <kendo-label
+              class="k-checkbox-label"
+              text="Show ASCI-Inventoried Nodes Only"
+            ></kendo-label>
+          </div>
+        </div>
+
+        <button
+          kendoButton
+          libTrackClick
+          [disabled]="
+            !form.value.reqNameControl ||
+            !form.value.files ||
+            !form.value['confirmation'] ||
+            !form.valid ||
+            (selectedReportType.includes('NRV') &&
+              selectedConfigValues.length !== 1)
+          "
+          themeColor="primary"
+          class="right gs-vaas-button-submit"
+          id="vaas-home-button-submit"
+          [activity_name]="'Submit'"
+          [service_name]="serviceName"
+          (trackClick)="submitFormValues()"
+          type="button"
+        >
+          Submit
+        </button>
+
+        <button
+          *ngIf="selectedReportType === visualization_types[0].title"
+          kendoButton
+          [disabled]="
+            !form.value.files ||
+            (selectedReportType.includes('NRV') &&
+              selectedConfigValues.length !== 1)
+          "
+          themeColor="primary"
+          (click)="validateConfig()"
+          class="right gs-vaas-button-validate"
+          type="button"
+          id="vaas-home-validate"
+        >
+          Validate
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <kendo-dialog *ngIf="isLoading" [width]="600">
+    <kendo-card width="579">
+      <img src="assets/images/uploadfile.png" />
+    </kendo-card>
+  </kendo-dialog>
+
+  <kendo-dialog *ngIf="showSelectedNetworkView" [width]="800" [height]="610">
+    <network-region-table
+      (rowSelectionEvent)="rowSelectionEvent($event)"
+      [data]="extractedData"
+    >
+    </network-region-table>
+    <kendo-dialog-actions>
+      <button
+        kendoButton
+        (click)="submit(form.value, form.valid)"
+        themeColor="primary"
+        type="button"
+      >
+        Submit
+      </button>
+      <button kendoButton type="button" (click)="closeSelectedNetworkView()">
+        Cancel
+      </button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
+
+  <kendo-dialog
+    title="Configuration Validation Results"
+    *ngIf="showValidationPanel && myFiles"
+    (close)="closeValidateView()"
+    [width]="'55vw'"
+    [height]="'60vh'"
+  >
+    <validation-table [data]="extractedData"> </validation-table>
+    <div class="gs-vaas-validation-button-group">
+      <button
+        kendoButton
+        (click)="getReportFile()"
+        themeColor="primary"
+        type="button"
+      >
+        Get Report File
+      </button>
+    </div>
+  </kendo-dialog>
+</main>

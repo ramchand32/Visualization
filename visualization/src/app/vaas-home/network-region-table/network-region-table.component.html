@@ -1,0 +1,10 @@
+<div class="gs-vaas-network-region-table">
+  <lib-grid-template
+    [isLoading]="isLoading"
+    [settings]="dataDisplay.uisettings"
+    [columns]="dataDisplay.columns"
+    [data]="dataDisplay.data"
+    [selectedKeys]="dataDisplay.selected"
+    (selectionEvent)="selectionEvent($event)"
+  ></lib-grid-template>
+</div>

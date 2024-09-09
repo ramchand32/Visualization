@@ -1,0 +1,21 @@
+.validation-strip-table {
+  border-collapse: collapse;
+}
+.validation-strip-table td {
+  padding: 10px 50px;
+}
+.validation-strip-table,
+td,
+th {
+  border: solid;
+  border-width: 0.5px;
+}
+.validation-strip-content {
+  height: 340px;
+}
+.validation-warning-box {
+  background-color: yellow;
+}
+.validation-error-box {
+  background-color: red;
+}

@@ -1,0 +1,258 @@
+.gs-vaas-details-service {
+  left: 0px;
+  /* width: 100%; */
+  height: 125px;
+  background: linear-gradient(90deg, #d1e3ff 0%, #d1e3ff 100%);
+}
+.gs-vaas {
+  display: flex;
+  padding: 19px 19px 8px;
+  font-size: 15px;
+  line-height: 20.43px;
+  color: #172a4a;
+}
+.gs-vaas-desc {
+  display: flex;
+  width: 782px;
+  height: 55px;
+  margin-left: 19px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  color: rgba(23, 42, 74, 0.7);
+}
+.gs-vaas-button {
+  float: right;
+  justify-content: center;
+  width: 98px;
+  height: 26px;
+  margin-right: 25px;
+  position: relative;
+  background: #eef5ff;
+  padding: 5px, 15px, 5px, 20px;
+  bottom: 40px;
+}
+.gs-vaas-button-text {
+  width: 68px;
+  height: 16px;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 0px;
+  color: #125ab3;
+}
+#gs-vaas-id-history {
+  width: 100%;
+  height: 30px;
+  margin-top: 29px;
+  margin-left: 20px;
+  display: flex;
+}
+.gs-vaas-header-vaastype {
+  min-width: 138px;
+  height: 22px;
+  margin-right: 71px;
+  font-size: 16px;
+  line-height: 22px;
+  color: #313133;
+}
+.gs-vaas-ktext-search {
+  box-sizing: border-box;
+  min-width: 206px;
+  /* width: 100%; */
+  height: 30px;
+  background: #ffffff;
+  border: 1px solid #d9eafa;
+  border-radius: 2px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+}
+.gs-vaas-kbutton-history {
+  display: flex;
+  justify-content: right;
+  width: 100%;
+  margin-right: 45px;
+  align-items: center;
+}
+.vis-history {
+  float: right;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  background: #125ab3;
+  border-radius: 2px;
+  margin-bottom: 5px;
+}
+#gs-vaas-id-selectandupload {
+  margin-top: 25px;
+  padding-left: 20px;
+  display: flex;
+  margin-bottom: 25px;
+}
+.gs-vaas-form-radio {
+  min-width: 415px;
+  height: 363px;
+  padding: 15px;
+  box-sizing: border-box;
+  border: 1px solid #d9eafa;
+  border-radius: 2px;
+}
+.k-form-buttons {
+  right: 30 px;
+}
+.gs-vaas-form-ndfs {
+  margin-top: -30px;
+  /* height: 363px; */
+  box-sizing: border-box;
+  border-radius: 2px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.gs-vaas-label-name {
+  width: 77px;
+  height: 16px;
+  top: 5px;
+  font-size: 14px;
+  line-height: 16px;
+  color: #313133;
+}
+.gs-vaas-star-red {
+  color: red;
+}
+.gs-vaas-label-desc {
+  width: 77px;
+  height: 16px;
+  bottom: 10px;
+  font-size: 14px;
+  line-height: 16px;
+  color: #313133;
+}
+.gs-vaas-label-selfile .gs-vaas-label-selconfig {
+  width: 77px;
+  height: 16px;
+  font-size: 14px;
+  line-height: 16px;
+  color: #313133;
+}
+.gs-vaas-ktext-reqName {
+  margin-bottom: 20px;
+  margin-top: 10px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+}
+.gs-vaas-text-description {
+  min-height: 97px;
+  height: auto;
+  margin-top: 10px;
+  margin-bottom: 18px;
+  padding: 5px;
+  font-size: 12px;
+  line-height: 144.2%;
+  background: #eff6ff;
+  color: #575759;
+  border: 1px solid #d9eafa;
+}
+kendo-fileselect {
+  min-width: 790px;
+  border: 1px solid #d9eafa;
+}
+.gs-vaas-fs-config {
+  background: rgb(0 0 0 / 0%);
+  box-sizing: border-box;
+  margin-bottom: auto;
+}
+.gs-vaas-button-submit,
+.gs-vaas-button-validate {
+  float: right;
+  top: 20px;
+  justify-content: center;
+  width: 110px;
+  height: 26px;
+  background: #125ab3;
+  border-radius: 2px;
+}
+.gs-vaas-button-validate {
+  margin-right: 30px;
+}
+
+.nopreview {
+  font-size: 14px;
+  line-height: 19px;
+  text-align: center;
+  margin-top: 32px;
+  color: #2f6394;
+}
+.preview-modal-body video {
+  width: 100%;
+  max-height: 36vh;
+}
+.preview-modal-body h4 {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 25px;
+  color: #2e6bd5;
+  margin: 9px 0;
+  left: 0;
+}
+.preview-modal-body h6 {
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+}
+.preview-modal-body .k-expander-header {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.gs-vaas-config-options-connection-types {
+  display: flex;
+  flex-direction: row;
+}
+
+.gs-vass-selconfig {
+  padding-top: 20px;
+}
+
+.gs-vaas-config-options-label {
+  font-size: 10px;
+  margin-left: 20px;
+}
+
+.gs-vass-config-options {
+  margin-top: 20px;
+}
+.gs-vaas-config-options-network-regions {
+  margin-left: 10px;
+}
+.gs-vaas-config-options-network-regions
+  .gs-vaas-config-options-connection-types {
+  margin-left: 20px;
+}
+
+.gs-vaas-config-options-connection-types-input {
+  margin-left: 10px;
+}
+
+.gs-vaas-config-options-network-regions-checkbox {
+  margin-left: 30px;
+}
+.gs-vaas-validation-button-group {
+  margin-top: 20px;
+}
+
+.gs-vaas-config-options-inventoried-nodes {
+  margin-top: 20px;
+}
+
+.gs-vaas-config-options-inventoried-nodes {
+  display: flex;
+  flex-direction: row;
+}
+
+.gs-vaas-validation-stylesheet-button {
+  margin-left: 20px;
+}

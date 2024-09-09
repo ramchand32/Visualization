@@ -1,0 +1,46 @@
+<main>
+  <div class="gs-vaas-div-hist1">
+    <button kendoButton (click)="goToVaasHome()" class="gs-vaas-bn-newreq">
+      New Request
+    </button>
+  </div>
+
+  <div>
+    <h1 class="gs-vaas-txt-vishist">Visualization History</h1>
+  </div>
+  <div class="gs-vaas-div-countusers">
+    <p class="gs-vaas-txt-nofviss">{{ totalItems }} Visualizations</p>
+    <kendo-combobox
+      [data]="users"
+      textField="RequestedBy"
+      valueField="RequestedBy"
+      (valueChange)="userFilterValueChange($event)"
+      placeholder="User"
+      class="gs-vaas-cb-userlist"
+      *ngIf="this.isAdmin"
+    >
+      <ng-template kendoComboBoxItemTemplate let-userItem>
+        <div class="row" style="margin-left: 10px">
+          <span style="margin-left: 10px">{{ userItem.RequestedBy }}</span>
+        </div>
+      </ng-template>
+    </kendo-combobox>
+  </div>
+
+  <div class="gs-vaas-grid-hist">
+    <lib-grid-template
+      [isLoading]="isLoading"
+      [settings]="dataDisplay.uisettings"
+      [columns]="dataDisplay.columns"
+      [data]="dataDisplay.data"
+      [timezone]="timezone"
+      [service_name]="serviceName"
+      (clickEvent)="handleEvent($event)"
+    ></lib-grid-template>
+    <lib-share-my-report
+      [opened]="shareMyReport"
+      [users]="accessableBy"
+      (reportEvents)="handleReportEvent($event)"
+    ></lib-share-my-report>
+  </div>
+</main>

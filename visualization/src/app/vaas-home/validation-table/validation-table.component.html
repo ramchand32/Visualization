@@ -1,0 +1,32 @@
+<div class="gs-vaas-validation-table">
+  <kendo-tabstrip>
+    <kendo-tabstrip-tab
+      *ngFor="let tabStrip of tabStrips"
+      title="{{ tabStrip }}"
+      [selected]="tabStrip === 'Event Log'"
+    >
+      <ng-template kendoTabContent>
+        <div class="validation-strip-content">
+          <table class="validation-strip-table" *ngIf="data && data[tabStrip]">
+            <tr>
+              <th *ngFor="let key of getKeysFromObject(data[tabStrip][0])">
+                {{ key }}
+              </th>
+            </tr>
+            <tr *ngFor="let row of data[tabStrip]">
+              <td
+                *ngFor="let key of getKeysFromObject(row)"
+                [ngClass]="{
+                  'validation-warning-box': row[key] == 'Warning',
+                  'validation-error-box': row[key] == 'Error'
+                }"
+              >
+                {{ row[key] }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </ng-template>
+    </kendo-tabstrip-tab>
+  </kendo-tabstrip>
+</div>

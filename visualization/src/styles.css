@@ -1,0 +1,52 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+
+@font-face {
+  font-family: Noto Sans;
+  src: url(assets/fonts/Noto_Sans/NotoSans-Regular.ttf);
+}
+
+* {
+  font-family: Noto Sans;
+}
+
+html,
+body,
+visualization-root {
+  background: #f7f9fc;
+  min-height: 100vh;
+  margin: 0;
+}
+
+visualization-root {
+  display: flex;
+  flex-direction: column;
+}
+
+/*main tag is used across multiple components*/
+main {
+  margin: 2vh 2.5vw;
+}
+
+.k-notification {
+  top: 56px;
+  padding: 10px 8px 10px 18px;
+}
+
+.k-notification-error {
+  border-color: #f69d95;
+  color: #da291c;
+  background-color: #ffd8d6;
+}
+
+.k-notification-success {
+  border-color: #8fef98;
+  color: #00a810;
+  background-color: #bcffc2;
+}
+
+.k-notification-info {
+  border-color: #93c2fd;
+  color: #366eb5;
+  background-color: #d7e6f9;
+}
